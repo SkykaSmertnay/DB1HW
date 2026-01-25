@@ -1,9 +1,8 @@
 package org.skypro.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Student { @Id
@@ -12,6 +11,9 @@ private Long id;
 
     private String name;
     private int age;
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
 
     public Student() {
@@ -36,6 +38,9 @@ private Long id;
 
     public void setAge(int age) {
         this.age = age;
+    }
+    public  Faculty getFaculty() {
+        return faculty;
     }
 }
 

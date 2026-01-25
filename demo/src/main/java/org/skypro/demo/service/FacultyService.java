@@ -1,6 +1,7 @@
 package org.skypro.demo.service;
 
 import org.skypro.demo.model.Faculty;
+import org.skypro.demo.model.Student;
 import org.skypro.demo.repository.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,13 @@ public class FacultyService {
 
     public void delete(Long id) {
         facultyRepository.deleteById(id);
+    }
+    public List<Faculty> findByNameOrColor(String value) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(value, value);
+    }
+    public List<Student> getFacultyStudents(Long facultyId) {
+        Faculty faculty = facultyRepository.findById(facultyId)
+                .orElseThrow(() -> new RuntimeException("Faculty not found"));
+        return faculty.getStudents();
     }
 }
