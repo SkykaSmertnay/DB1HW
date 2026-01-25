@@ -1,5 +1,6 @@
 package org.skypro.demo.controller;
 
+import org.skypro.demo.model.Faculty;
 import org.skypro.demo.model.Student;
 import org.skypro.demo.service.StudentService;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +46,16 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         studentService.delete(id);
+    }
+    @GetMapping("/students/age")
+    public List<Student> getStudentsByAgeBetween(
+            @RequestParam int min,
+            @RequestParam int max
+    ) {
+        return studentService.getStudentsByAgeBetween(min, max);
+    }
+    @GetMapping("/{id}/faculty")
+    public Faculty getStudentFaculty(@PathVariable Long id) {
+        return studentService.getStudentFaculty(id);
     }
 }

@@ -1,6 +1,7 @@
 package org.skypro.demo.controller;
 
 import org.skypro.demo.model.Faculty;
+import org.skypro.demo.model.Student;
 import org.skypro.demo.service.FacultyService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,13 @@ public class FacultyController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         facultyService.delete(id);
+    }
+    @GetMapping("/faculties/search")
+    public List<Faculty> searchFaculties(@RequestParam String query) {
+        return facultyService.findByNameOrColor(query);
+    }
+    @GetMapping("/{id}/students")
+    public List<Student> getFacultyStudents(@PathVariable Long id) {
+        return facultyService.getFacultyStudents(id);
     }
 }
