@@ -42,7 +42,7 @@ public class FacultyController {
     public void delete(@PathVariable Long id) {
         facultyService.delete(id);
     }
-    @GetMapping("/faculties/search")
+    @GetMapping("/search")
     public List<Faculty> searchFaculties(@RequestParam String query) {
         return facultyService.findByNameOrColor(query);
     }

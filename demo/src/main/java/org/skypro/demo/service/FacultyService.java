@@ -4,7 +4,9 @@ import org.skypro.demo.model.Faculty;
 import org.skypro.demo.model.Student;
 import org.skypro.demo.repository.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class FacultyService {
 
     public Faculty getById(Long id) {
         return facultyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Faculty not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Faculty not found"));
     }
 
     public List<Faculty> getAll() {
