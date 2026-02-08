@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class StudentService {
@@ -47,6 +48,7 @@ public class StudentService {
     public void delete(Long id) {
         studentRepository.deleteById(id);
     }
+
     public List<Student> getStudentsByAgeBetween(int min, int max) {
         return studentRepository.findByAgeBetween(min, max);
     }
@@ -54,5 +56,18 @@ public class StudentService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
         return student.getFaculty();
+    }
+    public long getStudentsCount() {
+        return studentRepository.getStudentsCount();
+    }
+
+    public Double getStudentsAverageAge() {
+        Double avg = studentRepository.getStudentsAverageAge();
+
+        return Objects.requireNonNullElse(avg, 0.0);
+    }
+
+    public List<Student> getLast5Students() {
+        return studentRepository.findLast5Students();
     }
 }

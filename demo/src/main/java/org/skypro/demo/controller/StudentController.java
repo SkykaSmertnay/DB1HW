@@ -42,6 +42,7 @@ public class StudentController {
     public void delete(@PathVariable Long id) {
         studentService.delete(id);
     }
+
     @GetMapping("/age")
     public List<Student> getStudentsByAgeBetween(
             @RequestParam int min,
@@ -52,5 +53,20 @@ public class StudentController {
     @GetMapping("/{id}/faculty")
     public Faculty getStudentFaculty(@PathVariable Long id) {
         return studentService.getStudentFaculty(id);
+    }
+
+    @GetMapping("/count")
+    public long getStudentsCount() {
+        return studentService.getStudentsCount();
+    }
+
+    @GetMapping("/avg-age")
+    public Double getStudentsAverageAge() {
+        return studentService.getStudentsAverageAge();
+    }
+
+    @GetMapping("/last-5")
+    public List<Student> getLast5Students() {
+        return studentService.getLast5Students();
     }
 }
