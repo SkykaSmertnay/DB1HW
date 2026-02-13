@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FacultyService {
@@ -78,5 +80,22 @@ public class FacultyService {
         logger.debug("Faculty id={} has {} students", facultyId, students.size());
         return students;
     }
+
+    public String getLongestFacultyName() {
+        logger.info("Was invoked method getLongestFacultyName");
+
+        List<Faculty> faculties = facultyRepository.findAll();
+        logger.debug("Total faculties found: {}", faculties.size());
+
+        return faculties.stream()
+                .map(Faculty::getName)
+                .filter(Objects::nonNull)
+                .max(Comparator.comparingInt(String::length))
+                .orElseThrow(() -> {
+                    logger.error("No faculties found in database");
+                    return new IllegalStateException("No faculties found");
+                });
+    }
+
 }
 

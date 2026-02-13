@@ -42,12 +42,20 @@ public class FacultyController {
     public void delete(@PathVariable Long id) {
         facultyService.delete(id);
     }
+
     @GetMapping("/search")
     public List<Faculty> searchFaculties(@RequestParam String query) {
         return facultyService.findByNameOrColor(query);
     }
+
     @GetMapping("/{id}/students")
     public List<Student> getFacultyStudents(@PathVariable Long id) {
         return facultyService.getFacultyStudents(id);
     }
+
+    @GetMapping("/faculties/longest-name")
+    public String getLongestFacultyName() {
+        return facultyService.getLongestFacultyName();
+    }
+
 }
