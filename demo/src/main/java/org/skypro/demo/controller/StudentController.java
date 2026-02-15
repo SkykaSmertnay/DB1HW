@@ -70,12 +70,12 @@ public class StudentController {
         return studentService.getLast5Students();
     }
 
-    @GetMapping("/students/names/starting-with-a")
+    @GetMapping("/names/starting-with-a")
     public List<String> getStudentsNamesStartingWithA() {
         return studentService.getStudentsNamesStartingWithA();
     }
 
-    @GetMapping("/students/average-age/find-all")
+    @GetMapping("/average-age/find-all")
     public Double getAverageAgeUsingFindAll() {
         return studentService.calculateAverageAgeUsingFindAll();
     }
@@ -87,8 +87,71 @@ public class StudentController {
                 .sum();
     }
 
+    @GetMapping("/print-parallel")
+    public String printStudentsParallel() throws InterruptedException {
 
+        List<Student> students = studentService.getAll(); // берём всех
 
+        if (students.size() < 6) {
+            return "Need at least 6 students in DB. Now: " + students.size();
+        }
+
+        System.out.println(Thread.currentThread().getName() + " -> " + students.get(0).getName());
+        System.out.println(Thread.currentThread().getName() + " -> " + students.get(1).getName());
+
+        Thread t1 = new Thread(() -> {
+            System.out.println(Thread.currentThread().getName() + " -> " + students.get(2).getName());
+            System.out.println(Thread.currentThread().getName() + " -> " + students.get(3).getName());
+        }, "parallel-thread-1");
+
+        Thread t2 = new Thread(() -> {
+            System.out.println(Thread.currentThread().getName() + " -> " + students.get(4).getName());
+            System.out.println(Thread.currentThread().getName() + " -> " + students.get(5).getName());
+        }, "parallel-thread-2");
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        return "Printed 6 students in console (main + 2 parallel threads)";
+    }
+
+    private synchronized void printSync(String name) {
+        System.out.println(Thread.currentThread().getName() + " -> " + name);
+    }
+
+    @GetMapping("/print-synchronized")
+    public String printStudentsSynchronized() throws InterruptedException {
+
+        List<Student> students = studentService.getAll();
+
+        if (students.size() < 6) {
+            return "Need at least 6 students in DB. Now: " + students.size();
+        }
+
+        printSync(students.get(0).getName());
+        printSync(students.get(1).getName());
+
+        Thread t1 = new Thread(() -> {
+            printSync(students.get(2).getName());
+            printSync(students.get(3).getName());
+        }, "parallel-thread-1");
+
+        Thread t2 = new Thread(() -> {
+            printSync(students.get(4).getName());
+            printSync(students.get(5).getName());
+        }, "parallel-thread-2");
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        return "Printed 6 students in console (synchronized print)";
+    }
 
 
 
