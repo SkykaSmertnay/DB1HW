@@ -134,4 +134,50 @@ public class StudentService {
         logger.debug("Found {} last students", students.size());
         return students;
     }
+
+    public List<String> getStudentsNamesStartingWithA() {
+        logger.info("Was invoked method getStudentsNamesStartingWithA");
+
+        List<Student> students = studentRepository.findAll();
+        logger.debug("Total students found in database: {}", students.size());
+
+        List<String> result = students.stream()
+                .map(Student::getName)
+                .filter(Objects::nonNull)
+                .map(String::toUpperCase)
+                .filter(name -> name.startsWith("A"))
+                .sorted()
+                .toList();
+
+        if (result.isEmpty()) {
+            logger.warn("No students found with names starting with letter 'A'");
+        } else {
+            logger.debug("Students with names starting with 'A': {}", result);
+        }
+
+        return result;
+    }
+
+
+
+    public Double calculateAverageAgeUsingFindAll() {
+        logger.info("Was invoked method calculateAverageAgeUsingFindAll");
+
+        List<Student> students = studentRepository.findAll();
+
+        if (students.isEmpty()) {
+            logger.warn("No students found. Returning 0.0 as average age");
+            return 0.0;
+        }
+
+        double averageAge = students.stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+
+        logger.debug("Calculated average age = {}", averageAge);
+        return averageAge;
+    }
+
+
 }
